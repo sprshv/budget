@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: rgba(128,128,128,0.35); border-radius: 4px; }
+</style>
+</helmet>
+
+<div style="{{ rootStyle }}">
+
+  <div style="{{ sidebarStyle }}">
+    <div style="{{ sidebarHeaderStyle }}">
+      <div style="{{ logoMarkStyle }}">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="2,11 6,6 9,9 14,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <sc-if value="{{ !sidebarCollapsed }}" hint-placeholder-val="{{ true }}">
+        <div style="{{ logoTextStyle }}">Verdant</div>
+      </sc-if>
+    </div>
+
+    <div style="{{ navListStyle }}">
+      <div style="{{ navStyles.dashboard }}" onClick="{{ goToDashboard }}">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" fill="{{ navColors.dashboard }}"/><rect x="10" y="2" width="6" height="6" rx="1" fill="{{ navColors.dashboard }}"/><rect x="2" y="10" width="6" height="6" rx="1" fill="{{ navColors.dashboard }}"/><rect x="10" y="10" width="6" height="6" rx="1" fill="{{ navColors.dashboard }}"/></svg>
+        <sc-if value="{{ !sidebarCollapsed }}" hint-placeholder-val="{{ true }}"><span>Dashboard</span></sc-if>
+      </div>
+      <div style="{{ navStyles.transactions }}" onClick="{{ goToTransactions }}">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><line x1="2" y1="4" x2="16" y2="4" stroke="{{ navColors.transactions }}" stroke-width="2" stroke-linecap="round"/><line x1="2" y1="9" x2="16" y2="9" stroke="{{ navColors.transactions }}" stroke-width="2" stroke-linecap="round"/><line x1="2" y1="14" x2="11" y2="14" stroke="{{ navColors.transactions }}" stroke-width="2" stroke-linecap="round"/></svg>
+        <sc-if value="{{ !sidebarCollapsed }}" hint-placeholder-val="{{ true }}"><span>Transactions</span></sc-if>
+      </div>
+      <div style="{{ navStyles.budgets }}" onClick="{{ goToBudgets }}">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6.5" stroke="{{ navColors.budgets }}" stroke-width="2"/><line x1="9" y1="9" x2="9" y2="2.5" stroke="{{ navColors.budgets }}" stroke-width="2" stroke-linecap="round"/></svg>
+        <sc-if value="{{ !sidebarCollapsed }}" hint-placeholder-val="{{ true }}"><span>Budgets</span></sc-if>
+      </div>
+      <div style="{{ navStyles.goals }}" onClick="{{ goToGoals }}">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6.5" stroke="{{ navColors.goals }}" stroke-width="2"/><circle cx="9" cy="9" r="2.5" fill="{{ navColors.goals }}"/></svg>
+        <sc-if value="{{ !sidebarCollapsed }}" hint-placeholder-val="{{ true }}"><span>Goals</span></sc-if>
+      </div>
+      <div style="{{ navStyles.bills }}" onClick="{{ goToBills }}">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="4" y="2" width="10" height="14" rx="1.5" stroke="{{ navColors.bills }}" stroke-width="1.6"/><line x1="6.5" y1="7" x2="11.5" y2="7" stroke="{{ navColors.bills }}" stroke-width="1.6" stroke-linecap="round"/><line x1="6.5" y1="10.5" x2="11.5" y2="10.5" stroke="{{ navColors.bills }}" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <sc-if value="{{ !sidebarCollapsed }}" hint-placeholder-val="{{ true }}"><span>Bills</span></sc-if>
+      </div>
+      <div style="{{ navStyles.analytics }}" onClick="{{ goToAnalytics }}">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="10" width="3" height="5" fill="{{ navColors.analytics }}"/><rect x="7.5" y="6" width="3" height="9" fill="{{ navColors.analytics }}"/><rect x="12" y="3" width="3" height="12" fill="{{ navColors.analytics }}"/></svg>
+        <sc-if value="{{ !sidebarCollapsed }}" hint-placeholder-val="{{ true }}"><span>Analytics</span></sc-if>
+      </div>
+      <div style="{{ navStyles.settings }}" onClick="{{ goToSettings }}">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="3" stroke="{{ navColors.settings }}" stroke-width="1.6"/><line x1="9" y1="1.5" x2="9" y2="4" stroke="{{ navColors.settings }}" stroke-width="1.6" stroke-linecap="round"/><line x1="9" y1="14" x2="9" y2="16.5" stroke="{{ navColors.settings }}" stroke-width="1.6" stroke-linecap="round"/><line x1="1.5" y1="9" x2="4" y2="9" stroke="{{ navColors.settings }}" stroke-width="1.6" stroke-linecap="round"/><line x1="14" y1="9" x2="16.5" y2="9" stroke="{{ navColors.settings }}" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <sc-if value="{{ !sidebarCollapsed }}" hint-placeholder-val="{{ true }}"><span>Settings</span></sc-if>
+      </div>
+    </div>
+
+    <div style="{{ collapseBtnStyle }}" onClick="{{ toggleSidebar }}">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="{{ collapseIconPoints }}" stroke="{{ colors.textSecondary }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <div style="{{ mainColStyle }}">
+    <div style="{{ topbarStyle }}">
+      <div style="{{ pageTitleStyle }}">{{ pageTitle }}</div>
+      <div style="{{ topbarRightStyle }}">
+        <div style="{{ themeToggleTrackStyle }}" onClick="{{ toggleTheme }}">
+          <div style="{{ themeToggleThumbStyle }}"></div>
+        </div>
+        <div style="{{ avatarStyle }}">JE</div>
+      </div>
+    </div>
+
+    <div style="{{ contentStyle }}">
+
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+      <div style="{{ dashGridStyle }}">
+
+        <div style="{{ accountsRowStyle }}">
+          <sc-for list="{{ accounts }}" as="acct" hint-placeholder-count="4">
+            <div style="{{ cardStyle }}">
+              <div style="{{ acctTopRowStyle }}">
+                <div>
+                  <div style="{{ acctNameStyle }}">{{ acct.name }}</div>
+                  <div style="{{ acctTypeStyle }}">{{ acct.type }}</div>
+                </div>
+                <svg width="72" height="28" viewBox="0 0 72 28"><polyline points="{{ acct.sparkPoints }}" fill="none" stroke="{{ acct.sparkColor }}" stroke-width="1.6"/></svg>
+              </div>
+              <div style="{{ acct.balanceColor }}">{{ acct.balanceFormatted }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="{{ netWorthCardStyle }}">
+          <div style="{{ sectionHeaderRowStyle }}">
+            <div>
+              <div style="{{ sectionLabelStyle }}">Net Worth</div>
+              <div style="{{ netWorthValueStyle }}">{{ netWorth.currentFormatted }}</div>
+              <div style="{{ netWorth.changeStyle }}">{{ netWorth.changeFormatted }} past 12 months</div>
+            </div>
+          </div>
+          <svg width="100%" height="180" viewBox="0 0 640 180" preserveAspectRatio="none" style="overflow:visible">
+            <sc-for list="{{ netWorth.gridLines }}" as="gl" hint-placeholder-count="3">
+              <line x1="0" y1="{{ gl }}" x2="640" y2="{{ gl }}" stroke="{{ colors.border }}" stroke-width="1"/>
+            </sc-for>
+            <line x1="0" y1="{{ netWorth.zeroY }}" x2="640" y2="{{ netWorth.zeroY }}" stroke="{{ colors.textTertiary }}" stroke-width="1"/>
+            <sc-for list="{{ netWorth.bars }}" as="b" hint-placeholder-count="12">
+              <rect x="{{ b.x }}" y="{{ b.y }}" width="{{ b.w }}" height="{{ b.h }}" fill="{{ b.color }}" rx="2">
+                <title>{{ b.title }}</title>
+              </rect>
+            </sc-for>
+            <polyline points="{{ netWorth.trendPoints }}" fill="none" stroke="{{ colors.text }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div style="{{ chartAxisRowStyle }}">
+            <sc-for list="{{ netWorth.months }}" as="m" hint-placeholder-count="12">
+              <span>{{ m }}</span>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="{{ cashflowCardStyle }}">
+          <div style="{{ sectionLabelStyle }}">Cash Flow — Income vs Expenses</div>
+          <svg width="100%" height="200" viewBox="0 0 640 200" preserveAspectRatio="none" style="overflow:visible; margin-top:12px">
+            <sc-for list="{{ cashFlow.gridLines }}" as="gl" hint-placeholder-count="4">
+              <line x1="0" y1="{{ gl }}" x2="640" y2="{{ gl }}" stroke="{{ colors.border }}" stroke-width="1"/>
+            </sc-for>
+            <path d="{{ cashFlow.incomeArea }}" fill="{{ colors.primary }}" opacity="0.08"/>
+            <path d="{{ cashFlow.expenseArea }}" fill="{{ colors.red }}" opacity="0.08"/>
+            <polyline points="{{ cashFlow.incomeLine }}" fill="none" stroke="{{ colors.primary }}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="{{ cashFlow.expenseLine }}" fill="none" stroke="{{ colors.red }}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <sc-for list="{{ cashFlow.points }}" as="p" hint-placeholder-count="6">
+              <circle cx="{{ p.x }}" cy="{{ p.yi }}" r="3.5" fill="{{ colors.primary }}"><title>{{ p.incomeTitle }}</title></circle>
+              <circle cx="{{ p.x }}" cy="{{ p.ye }}" r="3.5" fill="{{ colors.red }}"><title>{{ p.expenseTitle }}</title></circle>
+            </sc-for>
+          </svg>
+          <div style="{{ chartAxisRowStyle }}">
+            <sc-for list="{{ cashFlow.months }}" as="m" hint-placeholder-count="6">
+              <span>{{ m }}</span>
+            </sc-for>
+          </div>
+          <div style="{{ legendRowStyle }}">
+            <div style="{{ legendItemStyle }}"><div style="{{ legendDotIncomeStyle }}"></div><span>Income</span></div>
+            <div style="{{ legendItemStyle }}"><div style="{{ legendDotExpenseStyle }}"></div><span>Expenses</span></div>
+          </div>
+        </div>
+
+        <div style="{{ waterfallCardStyle }}">
+          <div style="{{ sectionLabelStyle }}">August Cash Flow Waterfall</div>
+          <svg width="100%" height="220" viewBox="0 0 640 220" preserveAspectRatio="none" style="overflow:visible; margin-top:8px">
+            <sc-for list="{{ waterfall.blocks }}" as="wb" hint-placeholder-count="10">
+              <g>
+                <rect x="{{ wb.x }}" y="{{ wb.y }}" width="{{ wb.w }}" height="{{ wb.h }}" fill="{{ wb.color }}" rx="2"><title>{{ wb.title }}</title></rect>
+                <text x="{{ wb.labelX }}" y="198" font-size="10.5" fill="{{ colors.textSecondary }}" text-anchor="middle">{{ wb.label }}</text>
+              </g>
+            </sc-for>
+          </svg>
+        </div>
+
+        <div style="{{ donutCardStyle }}">
+          <div style="{{ sectionLabelStyle }}">Spending Breakdown — August</div>
+          <div style="{{ donutRowStyle }}">
+            <svg width="180" height="180" viewBox="0 0 180 180">
+              <g transform="rotate(-90 90 90)">
+                <sc-for list="{{ donut.segments }}" as="seg" hint-placeholder-count="8">
+                  <circle cx="90" cy="90" r="70" fill="none" stroke="{{ seg.color }}" stroke-width="26" stroke-dasharray="{{ seg.dashArray }}" stroke-dashoffset="{{ seg.dashOffset }}"><title>{{ seg.title }}</title></circle>
+                </sc-for>
+              </g>
+              <text x="90" y="84" text-anchor="middle" font-size="13" fill="{{ colors.textSecondary }}">Total Spent</text>
+              <text x="90" y="106" text-anchor="middle" font-size="19" font-weight="700" fill="{{ colors.text }}">{{ donut.totalFormatted }}</text>
+            </svg>
+            <div style="{{ donutLegendStyle }}">
+              <sc-for list="{{ donut.segments }}" as="seg" hint-placeholder-count="8">
+                <div style="{{ donutLegendRowStyle }}">
+                  <div style="{{ seg.dotStyle }}"></div>
+                  <div style="{{ donutLegendNameStyle }}">{{ seg.name }}</div>
+                  <div style="{{ donutLegendValStyle }}">{{ seg.valueFormatted }}</div>
+                  <div style="{{ donutLegendPctStyle }}">{{ seg.pctFormatted }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="{{ transactionsCardStyle }}">
+          <div style="{{ cardHeaderRowStyle }}">
+            <div style="{{ sectionLabelStyle }}">Recent Transactions</div>
+            <div style="{{ viewAllStyle }}" onClick="{{ goToTransactions }}">View all</div>
+          </div>
+          <sc-for list="{{ recentTransactions }}" as="tx" hint-placeholder-count="5">
+            <div style="{{ txRowStyle }}">
+              <div style="{{ txLeftStyle }}">
+                <div style="{{ tx.dotStyle }}"></div>
+                <div>
+                  <div style="{{ txMerchantStyle }}">{{ tx.merchant }}</div>
+                  <div style="{{ txDateStyle }}">{{ tx.dateLabel }}</div>
+                </div>
+              </div>
+              <div style="{{ txRightStyle }}">
+                <div style="{{ tx.badgeStyle }}">{{ tx.category }}</div>
+                <div style="{{ tx.amountStyle }}">{{ tx.amountFormatted }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="{{ goalsPreviewCardStyle }}">
+          <div style="{{ cardHeaderRowStyle }}">
+            <div style="{{ sectionLabelStyle }}">Savings Goals</div>
+            <div style="{{ viewAllStyle }}" onClick="{{ goToGoals }}">View all</div>
+          </div>
+          <sc-for list="{{ goalsPreview }}" as="g" hint-placeholder-count="3">
+            <div style="{{ goalPreviewRowStyle }}">
+              <div style="{{ goalPreviewTopStyle }}">
+                <span style="{{ goalPreviewNameStyle }}">{{ g.name }}</span>
+                <span style="{{ goalPreviewAmtStyle }}">{{ g.currentFormatted }} / {{ g.targetFormatted }}</span>
+              </div>
+              <div style="{{ progressTrackStyle }}">
+                <div style="{{ g.barStyle }}"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isTransactions }}" hint-placeholder-val="{{ false }}">
+      <div style="{{ txPageStyle }}">
+        <div style="{{ filterBarStyle }}">
+          <input style="{{ searchInputStyle }}" placeholder="Search transactions..." value="{{ searchQuery }}" onChange="{{ onSearchChange }}"/>
+          <div style="{{ dateSelectStyle }}">Aug 1 – Aug 15, 2026</div>
+        </div>
+        <div style="{{ chipsRowStyle }}">
+          <sc-for list="{{ categoryChips }}" as="chip" hint-placeholder-count="8">
+            <div style="{{ chip.style }}" onClick="{{ chip.onClick }}">{{ chip.name }}</div>
+          </sc-for>
+        </div>
+        <div style="{{ txListCardStyle }}">
+          <div style="{{ txListHeaderStyle }}">
+            <span style="{{ txColMerchant }}">Merchant</span>
+            <span style="{{ txColCategory }}">Category</span>
+            <span style="{{ txColDate }}">Date</span>
+            <span style="{{ txColAmount }}">Amount</span>
+          </div>
+          <sc-for list="{{ filteredTransactions }}" as="tx" hint-placeholder-count="10">
+            <div style="{{ txFullRowStyle }}">
+              <div style="{{ txLeftStyle }}">
+                <div style="{{ tx.dotStyle }}"></div>
+                <div style="{{ txMerchantStyle }}">{{ tx.merchant }}</div>
+              </div>
+              <div style="{{ tx.badgeStyle }}">{{ tx.category }}</div>
+              <div style="{{ txDateColStyle }}">{{ tx.dateLabel }}</div>
+              <div style="{{ tx.amountStyle }}">{{ tx.amountFormatted }}</div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ emptyStateStyle }}">No transactions match your filters.</div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isBudgets }}" hint-placeholder-val="{{ false }}">
+      <div style="{{ budgetsPageStyle }}">
+        <div style="{{ rankBarCardStyle }}">
+          <div style="{{ sectionLabelStyle }}">Category Spending — Ranked</div>
+          <sc-for list="{{ categoryRanked }}" as="c" hint-placeholder-count="8">
+            <div style="{{ rankRowStyle }}">
+              <div style="{{ rankNameStyle }}">{{ c.name }}</div>
+              <div style="{{ rankTrackStyle }}"><div style="{{ c.barStyle }}"></div></div>
+              <div style="{{ rankAmtStyle }}">{{ c.valueFormatted }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="{{ cardHeaderRowStyle }}">
+          <div style="{{ sectionLabelStyle }}">Monthly Budgets — August</div>
+          <div style="{{ addBudgetBtnStyle }}">+ Add Budget</div>
+        </div>
+        <div style="{{ budgetsGridStyle }}">
+          <sc-for list="{{ budgets }}" as="b" hint-placeholder-count="8">
+            <div style="{{ cardStyle }}">
+              <div style="{{ budgetTopRowStyle }}">
+                <div style="{{ budgetNameStyle }}">{{ b.category }}</div>
+                <div style="{{ b.statusBadgeStyle }}">{{ b.statusLabel }}</div>
+              </div>
+              <div style="{{ budgetTrackStyle }}">
+                <div style="{{ b.fillStyle }}"></div>
+                <sc-if value="{{ b.overBudget }}" hint-placeholder-val="{{ false }}">
+                  <div style="{{ b.overflowMarkerStyle }}"></div>
+                </sc-if>
+              </div>
+              <div style="{{ budgetBottomRowStyle }}">
+                <span style="{{ budgetSpentStyle }}">{{ b.spentFormatted }} of {{ b.limitFormatted }}</span>
+                <span style="{{ b.pctStyle }}">{{ b.pctFormatted }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isGoals }}" hint-placeholder-val="{{ false }}">
+      <div style="{{ goalsGridStyle }}">
+        <sc-for list="{{ goalsFull }}" as="g" hint-placeholder-count="4">
+          <div style="{{ cardStyle }}">
+            <div style="{{ goalCardTopStyle }}">
+              <svg width="112" height="112" viewBox="0 0 112 112">
+                <circle cx="56" cy="56" r="46" fill="none" stroke="{{ colors.surfaceAlt }}" stroke-width="10"/>
+                <circle cx="56" cy="56" r="46" fill="none" stroke="{{ g.color }}" stroke-width="10" stroke-linecap="round" stroke-dasharray="{{ g.ringDashArray }}" stroke-dashoffset="{{ g.ringDashOffset }}" transform="rotate(-90 56 56)"/>
+                <text x="56" y="61" text-anchor="middle" font-size="20" font-weight="700" fill="{{ colors.text }}">{{ g.pctLabel }}</text>
+              </svg>
+              <div style="{{ goalInfoStyle }}">
+                <div style="{{ goalNameStyle }}">{{ g.name }}</div>
+                <div style="{{ goalAmtStyle }}">{{ g.currentFormatted }} <span style="{{ goalOfStyle }}">of {{ g.targetFormatted }}</span></div>
+                <div style="{{ goalEtaStyle }}">Est. completion {{ g.eta }}</div>
+              </div>
+            </div>
+            <div style="{{ goalBottomRowStyle }}">
+              <div style="{{ goalRemainingStyle }}">{{ g.remainingFormatted }} remaining</div>
+              <div style="{{ contributeBtnStyle }}">Contribute</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isOther }}" hint-placeholder-val="{{ false }}">
+        <div style="{{ placeholderStyle }}">{{ pageTitle }} is coming soon.</div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    view: 'dashboard',
+    theme: 'light',
+    sidebarCollapsed: false,
+    searchQuery: '',
+    selectedCategories: []
+  };
+
+  toggleCategory = (name) => this.setState(st => ({ selectedCategories: st.selectedCategories.includes(name) ? st.selectedCategories.filter(c => c !== name) : [...st.selectedCategories, name] }));
+  goToDashboard = () => this.setState({ view: 'dashboard' });
+  goToTransactions = () => this.setState({ view: 'transactions' });
+  goToBudgets = () => this.setState({ view: 'budgets' });
+  goToGoals = () => this.setState({ view: 'goals' });
+  goToBills = () => this.setState({ view: 'bills' });
+  goToAnalytics = () => this.setState({ view: 'analytics' });
+  goToSettings = () => this.setState({ view: 'settings' });
+
+  fmt(n, opts) {
+    const abs = Math.abs(n);
+    return (n < 0 ? '-$' : '$') + abs.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2, ...opts });
+  }
+  fmtSigned(n) { return (n >= 0 ? '+' : '-') + '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  fmtShort(n) { const abs = Math.abs(n); return (n < 0 ? '-$' : '$') + (abs >= 1000 ? (abs/1000).toFixed(1) + 'k' : abs.toFixed(0)); }
+
+  polyline(vals, w, h, min, max, padTop) {
+    const n = vals.length;
+    const range = (max - min) || 1;
+    return vals.map((v, i) => {
+      const x = n === 1 ? 0 : (i / (n - 1)) * w;
+      const y = padTop + (1 - (v - min) / range) * (h - padTop * 2);
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+  }
+
+  renderVals() {
+    const s = this.state;
+    const isDark = s.theme === 'dark';
+    const primary = 'rgb(34,183,128)';
+    const primaryHover = 'rgb(24,153,107)';
+    const red = 'rgb(220,38,38)';
+    const amber = 'rgb(217,119,6)';
+    const colors = isDark ? {
+      bg: '#0F1115', surface: '#181B20', surfaceAlt: '#20242B', border: '#2A2E33',
+      text: '#F3F4F6', textSecondary: '#9CA3AF', textTertiary: '#6B7280',
+      primary, primaryHover, primaryTint: 'rgba(34,183,128,0.18)',
+      red, redTint: 'rgba(220,38,38,0.16)', amber, amberTint: 'rgba(217,119,6,0.16)'
+    } : {
+      bg: '#F7F8F9', surface: '#FFFFFF', surfaceAlt: '#F1F3F4', border: '#E5E7EB',
+      text: '#111827', textSecondary: '#6B7280', textTertiary: '#9CA3AF',
+      primary, primaryHover, primaryTint: 'rgba(34,183,128,0.10)',
+      red, redTint: 'rgba(220,38,38,0.08)', amber, amberTint: 'rgba(217,119,6,0.10)'
+    };
+    const catColors = {
+      'Housing': '#6366F1', 'Food & Dining': '#06B6D4', 'Transportation': '#8B5CF6',
+      'Shopping': '#F97316', 'Entertainment': '#EC4899', 'Utilities': '#0EA5E9',
+      'Healthcare': '#14B8A6', 'Other': '#94A3B8'
+    };
+
+    const rootStyle = { display: 'flex', height: '100vh', width: '100%', background: colors.bg, color: colors.text, fontFamily: "'Inter', sans-serif", overflow: 'hidden' };
+
+    const sidebarW = s.sidebarCollapsed ? 72 : 232;
+    const sidebarStyle = { width: sidebarW + 'px', flexShrink: 0, display: 'flex', flexDirection: 'column', background: colors.surface, borderRight: '1px solid ' + colors.border, transition: 'width 0.15s ease', padding: '16px 12px', gap: '4px' };
+    const sidebarHeaderStyle = { display: 'flex', alignItems: 'center', gap: '10px', padding: '4px 4px 20px 4px' };
+    const logoMarkStyle = { width: '28px', height: '28px', borderRadius: '8px', background: primary, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 };
+    const logoTextStyle = { fontWeight: 800, fontSize: '17px', letterSpacing: '-0.02em' };
+    const navListStyle = { display: 'flex', flexDirection: 'column', gap: '2px', flex: 1 };
+
+    const navKey = (k) => ({
+      display: 'flex', alignItems: 'center', gap: '12px', padding: '9px 10px', borderRadius: '6px', cursor: 'pointer',
+      background: s.view === k ? colors.primaryTint : 'transparent',
+      color: s.view === k ? primary : colors.textSecondary,
+      fontWeight: s.view === k ? 600 : 500, fontSize: '13.5px', whiteSpace: 'nowrap', overflow: 'hidden'
+    });
+    const navStyles = { dashboard: navKey('dashboard'), transactions: navKey('transactions'), budgets: navKey('budgets'), goals: navKey('goals'), bills: navKey('bills'), analytics: navKey('analytics'), settings: navKey('settings') };
+    const navColors = { dashboard: navStyles.dashboard.color, transactions: navStyles.transactions.color, budgets: navStyles.budgets.color, goals: navStyles.goals.color, bills: navStyles.bills.color, analytics: navStyles.analytics.color, settings: navStyles.settings.color };
+
+    const collapseBtnStyle = { display: 'flex', alignItems: 'center', justifyContent: s.sidebarCollapsed ? 'center' : 'flex-end', padding: '10px 6px', cursor: 'pointer', borderTop: '1px solid ' + colors.border, marginTop: '8px' };
+    const collapseIconPoints = s.sidebarCollapsed ? '5,3 11,8 5,13' : '11,3 5,8 11,13';
+
+    const mainColStyle = { flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' };
+    const topbarStyle = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', height: '64px', flexShrink: 0, borderBottom: '1px solid ' + colors.border, background: colors.surface };
+    const pageTitleStyle = { fontSize: '17px', fontWeight: 700, letterSpacing: '-0.01em' };
+    const topbarRightStyle = { display: 'flex', alignItems: 'center', gap: '16px' };
+    const themeToggleTrackStyle = { width: '38px', height: '22px', borderRadius: '11px', background: isDark ? primary : colors.border, position: 'relative', cursor: 'pointer', transition: 'background 0.15s' };
+    const themeToggleThumbStyle = { width: '16px', height: '16px', borderRadius: '8px', background: '#fff', position: 'absolute', top: '3px', left: isDark ? '19px' : '3px', transition: 'left 0.15s' };
+    const avatarStyle = { width: '32px', height: '32px', borderRadius: '8px', background: colors.surfaceAlt, color: colors.text, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 700, cursor: 'pointer', border: '1px solid ' + colors.border };
+
+    const contentStyle = { flex: 1, overflow: 'auto', padding: '24px', background: colors.bg };
+    const cardStyle = { background: colors.surface, border: '1px solid ' + colors.border, borderRadius: '8px', padding: '16px', boxShadow: isDark ? 'none' : '0 1px 2px rgba(16,24,40,0.04)' };
+    const sectionLabelStyle = { fontSize: '13px', fontWeight: 600, color: colors.textSecondary, textTransform: 'uppercase', letterSpacing: '0.03em' };
+    const sectionHeaderRowStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' };
+    const cardHeaderRowStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' };
+    const viewAllStyle = { fontSize: '12.5px', fontWeight: 600, color: primary, cursor: 'pointer' };
+    const chartAxisRowStyle = { display: 'flex', justifyContent: 'space-between', marginTop: '6px', fontSize: '11px', color: colors.textTertiary };
+
+    // ---------- Dashboard grid ----------
+    const dashGridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '16px', maxWidth: '1320px' };
+    const accountsRowStyle = { gridColumn: '1 / -1', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' };
+
+    const accountsRaw = [
+      { name: 'Chase Total Checking', type: 'Checking', balance: 8432.19, spark: [7800,7900,7850,8050,8120,8000,8300,8250,8400,8380,8500,8432] },
+      { name: 'Ally Online Savings', type: 'Savings', balance: 24500.00, spark: [22000,22400,22800,23100,23400,23700,24000,24100,24300,24400,24450,24500] },
+      { name: 'Fidelity Brokerage', type: 'Investment', balance: 52310.44, spark: [47000,48200,47500,49800,50600,49200,51000,52400,51800,53100,52700,52310] },
+      { name: 'Apple Card', type: 'Credit Card', balance: -1240.33, spark: [-400,-600,-550,-900,-1100,-950,-1300,-1180,-1400,-1250,-1300,-1240] }
+    ];
+    const acctTopRowStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' };
+    const acctNameStyle = { fontSize: '13.5px', fontWeight: 600, lineHeight: 1.3 };
+    const acctTypeStyle = { fontSize: '11.5px', color: colors.textTertiary, marginTop: '3px' };
+    const accounts = accountsRaw.map(a => {
+      const min = Math.min(...a.spark), max = Math.max(...a.spark);
+      const up = a.spark[a.spark.length-1] >= a.spark[0];
+      return {
+        name: a.name, type: a.type,
+        balanceFormatted: this.fmt(a.balance),
+        balanceColor: { fontSize: '22px', fontWeight: 700, marginTop: '14px' },
+        sparkPoints: this.polyline(a.spark, 72, 28, min, max, 2),
+        sparkColor: a.balance < 0 ? colors.red : (up ? primary : colors.red)
+      };
+    });
+
+    // ---------- Net worth ----------
+    const nwMonths = ['Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'];
+    const deltas = [1200,1500,-800,1100,1900,1600,-500,2200,1700,2100,2500,1800];
+    let running = 67700;
+    const cumulative = deltas.map(d => (running += d));
+    const currentNW = cumulative[cumulative.length - 1];
+    const startNW = 67700;
+    const changeAbs = currentNW - startNW;
+    const changePct = (changeAbs / startNW) * 100;
+    const dMax = Math.max(...deltas.map(Math.abs));
+    const chartW = 640, chartH = 180, barGap = 8;
+    const barW = (chartW / deltas.length) - barGap;
+    const zeroY = chartH / 2;
+    const bars = deltas.map((d, i) => {
+      const x = i * (chartW / deltas.length) + barGap / 2;
+      const h = (Math.abs(d) / dMax) * (chartH / 2 - 10);
+      const y = d >= 0 ? zeroY - h : zeroY;
+      return { x: x.toFixed(1), y: y.toFixed(1), w: barW.toFixed(1), h: h.toFixed(1), color: d >= 0 ? primary : red, title: nwMonths[i] + ': ' + this.fmtSigned(d) };
+    });
+    const cMin = Math.min(...cumulative), cMax = Math.max(...cumulative);
+    const trendPoints = this.polyline(cumulative, chartW, chartH, cMin, cMax, 14);
+    const netWorth = {
+      currentFormatted: this.fmt(currentNW), 
+      changeFormatted: this.fmtSigned(changeAbs) + ' (' + (changePct>=0?'+':'') + changePct.toFixed(1) + '%)',
+      changeStyle: { fontSize: '13px', color: changeAbs >= 0 ? primary : red, marginTop: '2px', fontWeight: 600 },
+      months: nwMonths, bars, trendPoints, zeroY: zeroY.toFixed(1),
+      gridLines: [chartH*0.25, chartH*0.5, chartH*0.75]
+    };
+    const netWorthValueStyle = { fontSize: '30px', fontWeight: 800, letterSpacing: '-0.02em', marginTop: '2px' };
+    const netWorthCardStyle = { ...cardStyle, gridColumn: '1 / -1' };
+
+    // ---------- Cash flow line chart ----------
+    const cfMonths = ['Mar','Apr','May','Jun','Jul','Aug'];
+    const income = [6100,6050,6200,6150,6300,6280];
+    const expenses = [4200,4550,3900,4700,4100,3915];
+    const cfMax = Math.max(...income, ...expenses) * 1.1;
+    const cfW = 640, cfH = 200, pad = 12;
+    const n = cfMonths.length;
+    const xAt = (i) => (n === 1 ? 0 : (i/(n-1)) * cfW);
+    const yAt = (v) => pad + (1 - v / cfMax) * (cfH - pad*2);
+    const incomeLine = income.map((v,i) => xAt(i).toFixed(1)+','+yAt(v).toFixed(1)).join(' ');
+    const expenseLine = expenses.map((v,i) => xAt(i).toFixed(1)+','+yAt(v).toFixed(1)).join(' ');
+    const incomeArea = 'M ' + incomeLine.split(' ').join(' L ') + ` L ${cfW},${cfH} L 0,${cfH} Z`;
+    const expenseArea = 'M ' + expenseLine.split(' ').join(' L ') + ` L ${cfW},${cfH} L 0,${cfH} Z`;
+    const cfPoints = cfMonths.map((m,i) => ({ x: xAt(i).toFixed(1), yi: yAt(income[i]).toFixed(1), ye: yAt(expenses[i]).toFixed(1), incomeTitle: m+' income: '+this.fmt(income[i]), expenseTitle: m+' expenses: '+this.fmt(expenses[i]) }));
+    const cashFlow = { months: cfMonths, incomeLine, expenseLine, incomeArea, expenseArea, points: cfPoints, gridLines: [cfH*0.2, cfH*0.4, cfH*0.6, cfH*0.8] };
+    const cashflowCardStyle = { ...cardStyle };
+    const legendRowStyle = { display: 'flex', gap: '20px', marginTop: '10px' };
+    const legendItemStyle = { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', color: colors.textSecondary };
+    const legendDotIncomeStyle = { width: '8px', height: '8px', borderRadius: '2px', background: primary };
+    const legendDotExpenseStyle = { width: '8px', height: '8px', borderRadius: '2px', background: red };
+
+    // ---------- Waterfall ----------
+    const wfCats = [
+      { name: 'Income', value: 6280, type: 'income' },
+      { name: 'Housing', value: 2150, type: 'exp' },
+      { name: 'Food', value: 520, type: 'exp' },
+      { name: 'Transport', value: 460, type: 'exp' },
+      { name: 'Shopping', value: 347, type: 'exp' },
+      { name: 'Utilities', value: 183, type: 'exp' },
+      { name: 'Other', value: 156, type: 'exp' },
+      { name: 'Entertain.', value: 70, type: 'exp' },
+      { name: 'Health', value: 29, type: 'exp' }
+    ];
+    const endingBalance = 6280 - (6280 - (6280 - wfCats.slice(1).reduce((a,c)=>a+c.value,0)));
+    const finalBal = 6280 - wfCats.slice(1).reduce((a,c)=>a+c.value,0);
+    const wfMax = 6280;
+    const wfW = 640, wfH = 180, wfPadTop = 10;
+    const colW = wfW / (wfCats.length + 1);
+    let cursor = 6280;
+    const blocks = [];
+    blocks.push({ x: (0*colW+colW*0.1).toFixed(1), y: (wfPadTop + (1-6280/wfMax)*(wfH-wfPadTop)).toFixed(1), w: (colW*0.8).toFixed(1), h: (wfH*(6280/wfMax)).toFixed(1), color: primary, title: 'Income: ' + this.fmt(6280), label: 'Income', labelX: (0*colW+colW*0.5).toFixed(1) });
+    for (let i = 1; i < wfCats.length; i++) {
+      const c = wfCats[i];
+      const topVal = cursor;
+      cursor -= c.value;
+      const yTop = wfPadTop + (1 - topVal/wfMax) * (wfH - wfPadTop);
+      const yBot = wfPadTop + (1 - cursor/wfMax) * (wfH - wfPadTop);
+      blocks.push({ x: (i*colW+colW*0.1).toFixed(1), y: yTop.toFixed(1), w: (colW*0.8).toFixed(1), h: (yBot-yTop).toFixed(1), color: colors.textTertiary, title: c.name + ': -' + this.fmt(c.value), label: c.name, labelX: (i*colW+colW*0.5).toFixed(1) });
+    }
+    const lastI = wfCats.length;
+    const balY = wfPadTop + (1 - finalBal/wfMax) * (wfH - wfPadTop);
+    blocks.push({ x: (lastI*colW+colW*0.1).toFixed(1), y: balY.toFixed(1), w: (colW*0.8).toFixed(1), h: (wfH-balY).toFixed(1), color: primaryHover, title: 'Ending balance: ' + this.fmt(finalBal), label: 'Balance', labelX: (lastI*colW+colW*0.5).toFixed(1) });
+    const waterfall = { blocks };
+    const waterfallCardStyle = { ...cardStyle, gridColumn: '1 / -1' };
+
+    // ---------- Donut ----------
+    const spendCats = [
+      { name: 'Housing', value: 2150 }, { name: 'Food & Dining', value: 520 },
+      { name: 'Transportation', value: 460 }, { name: 'Shopping', value: 347 },
+      { name: 'Utilities', value: 183 }, { name: 'Other', value: 156 },
+      { name: 'Entertainment', value: 70 }, { name: 'Healthcare', value: 29 }
+    ];
+    const totalSpend = spendCats.reduce((a,c) => a+c.value, 0);
+    const circumference = 2 * Math.PI * 70;
+    let cum = 0;
+    const donutSegs = spendCats.map(c => {
+      const pct = c.value / totalSpend;
+      const len = pct * circumference;
+      const seg = {
+        name: c.name, color: catColors[c.name], valueFormatted: this.fmt(c.value, {minimumFractionDigits:0,maximumFractionDigits:0}),
+        pctFormatted: (pct*100).toFixed(1)+'%', title: c.name + ': ' + this.fmt(c.value) + ' (' + (pct*100).toFixed(1) + '%)',
+        dashArray: len.toFixed(1) + ' ' + (circumference-len).toFixed(1),
+        dashOffset: (-cum).toFixed(1),
+        dotStyle: { width: '9px', height: '9px', borderRadius: '2px', background: catColors[c.name], flexShrink: 0 }
+      };
+      cum += len;
+      return seg;
+    });
+    const donut = { segments: donutSegs, totalFormatted: this.fmt(totalSpend, {minimumFractionDigits:0,maximumFractionDigits:0}) };
+    const donutCardStyle = { ...cardStyle };
+    const donutRowStyle = { display: 'flex', gap: '24px', alignItems: 'center', marginTop: '8px' };
+    const donutLegendStyle = { display: 'flex', flexDirection: 'column', gap: '8px', flex: 1, minWidth: 0 };
+    const donutLegendRowStyle = { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px' };
+    const donutLegendNameStyle = { flex: 1, color: colors.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' };
+    const donutLegendValStyle = { color: colors.textSecondary, fontWeight: 600 };
+    const donutLegendPctStyle = { color: colors.textTertiary, width: '42px', textAlign: 'right' };
+
+    // ---------- Transactions data ----------
+    const allTx = [
+      { merchant: 'Acme Corp Payroll', category: 'Income', amount: 4850.00, date: 'Aug 15' },
+      { merchant: 'Whole Foods Market', category: 'Food & Dining', amount: -87.32, date: 'Aug 15' },
+      { merchant: 'Shell Gas Station', category: 'Transportation', amount: -52.14, date: 'Aug 14' },
+      { merchant: 'Netflix', category: 'Entertainment', amount: -15.49, date: 'Aug 13' },
+      { merchant: 'Starbucks', category: 'Food & Dining', amount: -6.75, date: 'Aug 13' },
+      { merchant: 'Parkview Apartments — Rent', category: 'Housing', amount: -2150.00, date: 'Aug 12' },
+      { merchant: 'Amazon', category: 'Shopping', amount: -134.87, date: 'Aug 11' },
+      { merchant: 'Uber', category: 'Transportation', amount: -23.40, date: 'Aug 10' },
+      { merchant: 'Con Edison', category: 'Utilities', amount: -98.22, date: 'Aug 9' },
+      { merchant: "Trader Joe's", category: 'Food & Dining', amount: -64.19, date: 'Aug 8' },
+      { merchant: 'CVS Pharmacy', category: 'Healthcare', amount: -28.56, date: 'Aug 7' },
+      { merchant: 'Spotify', category: 'Entertainment', amount: -11.99, date: 'Aug 6' },
+      { merchant: 'Verizon Wireless', category: 'Utilities', amount: -85.00, date: 'Aug 5' },
+      { merchant: 'Target', category: 'Shopping', amount: -212.44, date: 'Aug 4' },
+      { merchant: 'Chipotle', category: 'Food & Dining', amount: -14.85, date: 'Aug 3' },
+      { merchant: 'Freelance Client Payment', category: 'Income', amount: 1200.00, date: 'Aug 2' },
+      { merchant: 'Delta Air Lines', category: 'Transportation', amount: -342.00, date: 'Aug 1' },
+      { merchant: 'AMC Theatres', category: 'Entertainment', amount: -42.50, date: 'Jul 31' },
+      { merchant: 'Interest Payment', category: 'Income', amount: 4.28, date: 'Jul 31' },
+      { merchant: 'Progressive Insurance', category: 'Other', amount: -156.00, date: 'Jul 30' }
+    ];
+    const mapTx = (t) => ({
+      merchant: t.merchant, category: t.category, dateLabel: t.date,
+      amountFormatted: this.fmtSigned(t.amount),
+      amountStyle: { fontWeight: 700, fontSize: '14px', color: t.amount >= 0 ? primary : colors.text, minWidth: '90px', textAlign: 'right' },
+      dotStyle: { width: '9px', height: '9px', borderRadius: t.category === 'Income' ? '2px' : '50%', background: t.category === 'Income' ? primary : (catColors[t.category] || colors.textTertiary), flexShrink: 0 },
+      badgeStyle: { display: 'inline-flex', alignItems: 'center', padding: '3px 8px', borderRadius: '4px', fontSize: '11.5px', fontWeight: 600, background: t.category === 'Income' ? colors.primaryTint : (catColors[t.category] ? catColors[t.category] + '22' : colors.surfaceAlt), color: t.category === 'Income' ? primary : (catColors[t.category] || colors.textSecondary), whiteSpace: 'nowrap' }
+    });
+    const recentTransactions = allTx.slice(0, 5).map(mapTx);
+
+    const q = s.searchQuery.toLowerCase();
+    const filteredRaw = allTx.filter(t => (!q || t.merchant.toLowerCase().includes(q)) && (s.selectedCategories.length === 0 || s.selectedCategories.includes(t.category)));
+    const filteredTransactions = filteredRaw.map(mapTx);
+    const noResults = filteredTransactions.length === 0;
+
+    const allCatNames = ['Income','Housing','Food & Dining','Transportation','Shopping','Entertainment','Utilities','Healthcare','Other'];
+    const categoryChips = allCatNames.map(name => {
+      const active = s.selectedCategories.includes(name);
+      const c = name === 'Income' ? primary : (catColors[name] || colors.textSecondary);
+      return { name, style: { padding: '6px 12px', borderRadius: '999px', fontSize: '12.5px', fontWeight: 600, cursor: 'pointer', border: '1px solid ' + (active ? c : colors.border), background: active ? c + '1f' : 'transparent', color: active ? c : colors.textSecondary }, onClick: () => this.toggleCategory(name) };
+    });
+
+    // ---------- Budgets ----------
+    const budgetsRaw = [
+      { category: 'Housing', spent: 2150, limit: 2200 },
+      { category: 'Food & Dining', spent: 520, limit: 600 },
+      { category: 'Transportation', spent: 460, limit: 350 },
+      { category: 'Shopping', spent: 347, limit: 300 },
+      { category: 'Entertainment', spent: 70, limit: 150 },
+      { category: 'Utilities', spent: 183, limit: 220 },
+      { category: 'Healthcare', spent: 29, limit: 100 },
+      { category: 'Other', spent: 156, limit: 150 }
+    ];
+    const budgets = budgetsRaw.map(b => {
+      const pct = (b.spent / b.limit) * 100;
+      const over = pct > 100;
+      const color = over ? red : (pct >= 70 ? amber : primary);
+      const status = over ? 'Over budget' : (pct >= 70 ? 'Near limit' : 'On track');
+      return {
+        category: b.category, spentFormatted: this.fmt(b.spent, {minimumFractionDigits:0,maximumFractionDigits:0}),
+        limitFormatted: this.fmt(b.limit, {minimumFractionDigits:0,maximumFractionDigits:0}),
+        pctFormatted: pct.toFixed(0) + '%', overBudget: over,
+        statusLabel: status,
+        statusBadgeStyle: { fontSize: '11px', fontWeight: 600, padding: '3px 8px', borderRadius: '4px', background: over ? colors.redTint : (pct>=70 ? colors.amberTint : colors.primaryTint), color },
+        pctStyle: { fontSize: '12.5px', fontWeight: 700, color },
+        budgetTrackBg: colors.surfaceAlt,
+        fillStyle: { position: 'absolute', left: 0, top: 0, bottom: 0, width: Math.min(pct, 100) + '%', background: color, borderRadius: '4px' },
+        overflowMarkerStyle: { position: 'absolute', right: 0, top: '-3px', bottom: '-3px', width: '3px', background: red, borderRadius: '2px' }
+      };
+    });
+    const budgetTrackStyle = { position: 'relative', height: '8px', borderRadius: '4px', background: colors.surfaceAlt, marginTop: '12px', overflow: 'visible' };
+    const budgetTopRowStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center' };
+    const budgetNameStyle = { fontSize: '14px', fontWeight: 600 };
+    const budgetBottomRowStyle = { display: 'flex', justifyContent: 'space-between', marginTop: '8px' };
+    const budgetSpentStyle = { fontSize: '12.5px', color: colors.textSecondary };
+    const budgetsGridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' };
+    const addBudgetBtnStyle = { fontSize: '13px', fontWeight: 600, color: '#fff', background: primary, padding: '8px 14px', borderRadius: '6px', cursor: 'pointer' };
+    const rankBarCardStyle = { ...cardStyle, marginBottom: '20px' };
+    const catMax = Math.max(...spendCats.map(c => c.value));
+    const categoryRanked = [...spendCats].sort((a,b) => b.value - a.value).map(c => ({
+      name: c.name, valueFormatted: this.fmt(c.value, {minimumFractionDigits:0,maximumFractionDigits:0}),
+      barStyle: { width: (c.value/catMax*100).toFixed(1)+'%', height: '10px', borderRadius: '4px', background: catColors[c.name] }
+    }));
+    const rankRowStyle = { display: 'grid', gridTemplateColumns: '130px 1fr 70px', alignItems: 'center', gap: '12px', padding: '7px 0', fontSize: '13px' };
+    const rankNameStyle = { color: colors.textSecondary };
+    const rankTrackStyle = { background: colors.surfaceAlt, borderRadius: '4px', height: '10px' };
+    const rankAmtStyle = { textAlign: 'right', fontWeight: 600 };
+    const budgetsPageStyle = { maxWidth: '1320px' };
+
+    // ---------- Goals ----------
+    const goalsRaw = [
+      { name: 'Emergency Fund', current: 8400, target: 12000, color: primary, eta: 'Dec 2026' },
+      { name: 'Trip to Japan', current: 2150, target: 5000, color: '#6366F1', eta: 'Mar 2027' },
+      { name: 'New Car Down Payment', current: 6200, target: 8000, color: '#8B5CF6', eta: 'Oct 2026' },
+      { name: 'Home Down Payment', current: 24000, target: 60000, color: '#0EA5E9', eta: '2029' }
+    ];
+    const gCirc = 2 * Math.PI * 46;
+    const mapGoal = (g) => {
+      const pct = g.current / g.target;
+      return {
+        name: g.name, color: g.color, eta: g.eta,
+        currentFormatted: this.fmt(g.current, {minimumFractionDigits:0,maximumFractionDigits:0}),
+        targetFormatted: this.fmt(g.target, {minimumFractionDigits:0,maximumFractionDigits:0}),
+        remainingFormatted: this.fmt(g.target-g.current, {minimumFractionDigits:0,maximumFractionDigits:0}),
+        pctLabel: (pct*100).toFixed(0)+'%',
+        ringDashArray: (pct*gCirc).toFixed(1) + ' ' + gCirc.toFixed(1),
+        ringDashOffset: '0',
+        barStyle: { width: (pct*100).toFixed(1)+'%', height: '8px', borderRadius: '4px', background: g.color }
+      };
+    };
+    const goalsFull = goalsRaw.map(mapGoal);
+    const goalsPreview = goalsRaw.slice(0,3).map(mapGoal);
+    const goalsGridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px', maxWidth: '1320px' };
+    const goalCardTopStyle = { display: 'flex', gap: '18px', alignItems: 'center' };
+    const goalInfoStyle = { flex: 1, minWidth: 0 };
+    const goalNameStyle = { fontSize: '15px', fontWeight: 700 };
+    const goalAmtStyle = { fontSize: '20px', fontWeight: 800, marginTop: '4px' };
+    const goalOfStyle = { fontSize: '13px', fontWeight: 500, color: colors.textSecondary };
+    const goalEtaStyle = { fontSize: '12.5px', color: colors.textSecondary, marginTop: '4px' };
+    const goalBottomRowStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px', paddingTop: '14px', borderTop: '1px solid ' + colors.border };
+    const goalRemainingStyle = { fontSize: '12.5px', color: colors.textSecondary };
+    const contributeBtnStyle = { fontSize: '13px', fontWeight: 600, color: '#fff', background: primary, padding: '7px 14px', borderRadius: '6px', cursor: 'pointer' };
+    const goalPreviewRowStyle = { marginBottom: '14px' };
+    const goalPreviewTopStyle = { display: 'flex', justifyContent: 'space-between', marginBottom: '6px', fontSize: '13px' };
+    const goalPreviewNameStyle = { fontWeight: 600 };
+    const goalPreviewAmtStyle = { color: colors.textSecondary };
+    const progressTrackStyle = { height: '8px', borderRadius: '4px', background: colors.surfaceAlt };
+
+    return {
+      colors, rootStyle, sidebarStyle, sidebarHeaderStyle, logoMarkStyle, logoTextStyle, navListStyle,
+      navStyles, navColors, collapseBtnStyle, collapseIconPoints, sidebarCollapsed: s.sidebarCollapsed,
+      mainColStyle, topbarStyle, pageTitleStyle, topbarRightStyle, themeToggleTrackStyle, themeToggleThumbStyle, avatarStyle,
+      contentStyle, cardStyle, sectionLabelStyle, sectionHeaderRowStyle, cardHeaderRowStyle, viewAllStyle, chartAxisRowStyle,
+      dashGridStyle, accountsRowStyle, accounts, acctTopRowStyle, acctNameStyle, acctTypeStyle,
+      netWorth, netWorthCardStyle, netWorthValueStyle,
+      cashFlow, cashflowCardStyle, legendRowStyle, legendItemStyle, legendDotIncomeStyle, legendDotExpenseStyle,
+      waterfall, waterfallCardStyle,
+      donut, donutCardStyle, donutRowStyle, donutLegendStyle, donutLegendRowStyle, donutLegendNameStyle, donutLegendValStyle, donutLegendPctStyle,
+      recentTransactions, transactionsCardStyle: cardStyle, txRowStyle: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderTop: '1px solid ' + colors.border },
+      txLeftStyle: { display: 'flex', alignItems: 'center', gap: '10px' }, txRightStyle: { display: 'flex', alignItems: 'center', gap: '10px' },
+      txMerchantStyle: { fontSize: '13.5px', fontWeight: 600 }, txDateStyle: { fontSize: '11.5px', color: colors.textTertiary },
+      goalsPreviewCardStyle: cardStyle, goalPreviewRowStyle, goalPreviewTopStyle, goalPreviewNameStyle, goalPreviewAmtStyle, progressTrackStyle,
+      view: s.view, isDashboard: s.view === 'dashboard', isTransactions: s.view === 'transactions', isBudgets: s.view === 'budgets', isGoals: s.view === 'goals',
+      isOther: !['dashboard','transactions','budgets','goals'].includes(s.view),
+      pageTitle: { dashboard: 'Dashboard', transactions: 'Transactions', budgets: 'Budgets', goals: 'Goals', bills: 'Bills', analytics: 'Analytics', settings: 'Settings' }[s.view],
+      txPageStyle: { maxWidth: '1200px' },
+      filterBarStyle: { display: 'flex', gap: '12px', marginBottom: '14px' },
+      searchInputStyle: { flex: 1, padding: '9px 12px', borderRadius: '6px', border: '1px solid ' + colors.border, background: colors.surface, color: colors.text, fontSize: '13.5px', fontFamily: 'inherit', outline: 'none' },
+      dateSelectStyle: { padding: '9px 14px', borderRadius: '6px', border: '1px solid ' + colors.border, background: colors.surface, fontSize: '13px', color: colors.textSecondary, whiteSpace: 'nowrap' },
+      chipsRowStyle: { display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '18px' },
+      categoryChips, searchQuery: s.searchQuery, onSearchChange: (e) => this.setState({ searchQuery: e.target.value }),
+      toggleCategory: this.toggleCategory,
+      goToDashboard: this.goToDashboard, goToTransactions: this.goToTransactions, goToBudgets: this.goToBudgets,
+      goToGoals: this.goToGoals, goToBills: this.goToBills, goToAnalytics: this.goToAnalytics, goToSettings: this.goToSettings,
+      txListCardStyle: cardStyle,
+      txListHeaderStyle: { display: 'grid', gridTemplateColumns: '2fr 1fr 100px 110px', fontSize: '11.5px', fontWeight: 700, color: colors.textTertiary, textTransform: 'uppercase', letterSpacing: '0.03em', paddingBottom: '10px', borderBottom: '1px solid ' + colors.border },
+      txColMerchant: {}, txColCategory: {}, txColDate: {}, txColAmount: { textAlign: 'right' },
+      txFullRowStyle: { display: 'grid', gridTemplateColumns: '2fr 1fr 100px 110px', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid ' + colors.border },
+      txDateColStyle: { fontSize: '13px', color: colors.textSecondary },
+      filteredTransactions, noResults, emptyStateStyle: { padding: '32px 0', textAlign: 'center', color: colors.textTertiary, fontSize: '13.5px' },
+      budgetsPageStyle, rankBarCardStyle, categoryRanked, rankRowStyle, rankNameStyle, rankTrackStyle, rankAmtStyle,
+      addBudgetBtnStyle, budgetsGridStyle, budgets, budgetTopRowStyle, budgetNameStyle, budgetTrackStyle, budgetBottomRowStyle, budgetSpentStyle,
+      goalsGridStyle, goalsFull, goalCardTopStyle, goalInfoStyle, goalNameStyle, goalAmtStyle, goalOfStyle, goalEtaStyle, goalBottomRowStyle, goalRemainingStyle, contributeBtnStyle,
+      goalsPreview,
+      placeholderStyle: { padding: '80px 24px', textAlign: 'center', color: colors.textTertiary, fontSize: '14px' },
+      setView: (v) => this.setState({ view: v }),
+      toggleTheme: () => this.setState(st => ({ theme: st.theme === 'dark' ? 'light' : 'dark' })),
+      toggleSidebar: () => this.setState(st => ({ sidebarCollapsed: !st.sidebarCollapsed })),
+      isDark
+    };
+  }
+}
+
+</script>
+</body>
+</html>
